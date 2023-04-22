@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\EntrantController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\ConfirmablePasswordController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
@@ -11,11 +12,19 @@ use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
-    if (cache('pb') == 'ppb') {
+    switch (App\Models\User::exists() ? cache('pb') : 'ppb') {
+    case 'ppb':
         Route::get('register', [RegisteredUserController::class, 'create'])
                     ->name('register');
-
         Route::post('register', [RegisteredUserController::class, 'store']);
+        break;
+    case 'ppdb':
+        Route::get('register', [EntrantController::class, 'create'])
+                    ->name('ppdb');
+        Route::resource('register', EntrantController::class)->only([
+            'store', 'show', 'edit'
+        ]);
+        break;
     }
 
     Route::get('login', [AuthenticatedSessionController::class, 'create'])

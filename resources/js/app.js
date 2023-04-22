@@ -8,7 +8,7 @@ import { InertiaProgress } from '@inertiajs/progress';
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';
 
 createInertiaApp({
-    title: (title) => `${title} - ${appName}`,
+    title: (title) => `${title} \u2013 ${appName}`,
     resolve: (name) => require(`./Pages/${name}`),
     setup({ el, App, props }) {
         return render(<App {...props} />, el);

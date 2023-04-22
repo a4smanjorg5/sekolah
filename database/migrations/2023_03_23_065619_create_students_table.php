@@ -15,10 +15,10 @@ class CreateStudentsTable extends Migration
     {
         Schema::create('students', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('profil')->unique();
-            $table->foreign('profil')
-                    ->references('nik')
-                    ->on('entrants')
+            // $table->unsignedBigInteger('nik')->unique();
+            $table->foreignId('nik')
+                    ->unique()
+                    ->constrained('entrants', 'nik')
                     ->restrictOnUpdate()
                     ->cascadeOnDelete();
             $table->foreignId('genrwork')->default(0);

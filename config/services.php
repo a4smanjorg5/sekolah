@@ -14,6 +14,12 @@ return [
     |
     */
 
+    'ig_business' => [
+        'prefix_url' => 'https://graph.facebook.com/v16.0/',
+        'access_token' => env('IG_ACCESS_TOKEN'),
+        'id' => env('IG_BUSINESS_ID'),
+    ],
+
     'mailgun' => [
         'domain' => env('MAILGUN_DOMAIN'),
         'secret' => env('MAILGUN_SECRET'),

@@ -3,7 +3,7 @@ import Button from '@/Components/Button';
 import Common from '@/Layouts/Common';
 import { Head, Link, useForm } from '@inertiajs/inertia-react';
 
-export default function VerifyEmail({ status }) {
+export default function VerifyEmail({ logo, status }) {
     const { post, processing } = useForm();
 
     const submit = (e) => {
@@ -13,7 +13,7 @@ export default function VerifyEmail({ status }) {
     };
 
     return (
-        <Common>
+        <Common logo={logo}>
             <Head title="Email Verification" />
 
             <div className="mb-4 text-sm text-gray-600">

@@ -14,6 +14,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('ig', function(Request $request) {
+    return ig_profile();
+})->middleware('cache.headers:public;max_age=2628000;etag')->name('instagram');
+
+Route::get('ig/media', function(Request $request) {
+    return ig_media();
+})->name('ig.media');
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });

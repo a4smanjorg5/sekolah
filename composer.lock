@@ -7831,7 +7831,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "a4smanjorg5/utilsv": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

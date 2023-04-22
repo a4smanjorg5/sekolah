@@ -42,6 +42,8 @@ class HandleInertiaRequests extends Middleware
             'ziggy' => function () {
                 return (new Ziggy)->toArray();
             },
+            'bgStyle' => config('bgstyle'),
+            'logo'=> cache('logo'),
         ]);
         if (!$request->user()) {
             $props = array_merge($props, [

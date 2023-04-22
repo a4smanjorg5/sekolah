@@ -6,29 +6,58 @@ import pages from '@/Components/GuestPages';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link } from '@inertiajs/inertia-react';
 
-export default function Guest({ auth, header, canLogin, canRegister, canEntry, children }) {
+export default function Guest({ auth, bgStyle, header, logo, tel, addr, canLogin, canRegister, canEntry, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
 
+    function nav_link(p) {
+        return (typeof p.value == 'object' && !(p.value instanceof Array) ? (
+                <NavLink>
+                    {p.label}
+                </NavLink>
+            ) : (
+                <NavLink key={p.value} href={route(typeof p.value == 'object' ? p.value[0] : p.value)} active={typeof p.value == 'object' ? p.value.findIndex(route().current, route()) >= 0 : route().current(p.value)}>
+                    {p.label}
+                </NavLink>
+            )
+        );
+    }
+
+    function rnav_link(p) {
+        return (typeof p.value == 'object' && !(p.value instanceof Array) ? (
+                <ResponsiveNavLink>
+                    {p.label}
+                </ResponsiveNavLink>
+            ) : (
+                <ResponsiveNavLink key={p.value} href={route(typeof p.value == 'object' ? p.value[0] : p.value)} active={typeof p.value == 'object' ? p.value.findIndex(route().current, route()) >= 0 : route().current(p.value)}>
+                    {p.label}
+                </ResponsiveNavLink>
+            )
+        );
+    }
+
     return (
-        <div className="min-h-screen bg-gray-100">
+        <div className="min-h-screen bg-gray-100" style={bgStyle}>
+            <div className="bg-white border-b border-gray-100">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="flex">
+                        {tel && <a href={'tel:' + tel}>{tel}</a>}
+                        <a href="https://github.com/genrwork/yayasan#readme" className="text-gray-500" target="pengembang">Pengembang</a>
+                        {addr && <a href={addr.link} target="addr">{addr.label}</a>}
+                    </div>
+                </div>
+            </div>
             <nav className="bg-white border-b border-gray-100">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between h-16">
                         <div className="flex">
                             <div className="shrink-0 flex items-center">
                                 <Link href="/">
-                                    <ApplicationLogo className="block h-9 w-auto text-gray-500" />
+                                    <ApplicationLogo src={logo} className="block h-9 w-auto text-gray-500" />
                                 </Link>
                             </div>
 
                             <div className="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                                {Object.keys(pages).map(function(n) {
-                                    return (
-                                        <NavLink key={n} href={route(n)} active={route().current(n)}>
-                                            {pages[n]}
-                                        </NavLink>
-                                    )
-                                })}
+                                {pages.map(nav_link)}
                             </div>
                         </div>
 
@@ -88,13 +117,7 @@ export default function Guest({ auth, header, canLogin, canRegister, canEntry, c
 
                 <div className={(showingNavigationDropdown ? 'block' : 'hidden') + ' sm:hidden'}>
                     <div className="pt-2 pb-3 space-y-1">
-                        {Object.keys(pages).map(function(n) {
-                            return (
-                                <ResponsiveNavLink key={n} href={route(n)} active={route().current(n)}>
-                                    {pages[n]}
-                                </ResponsiveNavLink>
-                            )
-                        })}
+                        {pages.map(nav_link)}
                     </div>
 
                     <div className="pt-1 pb-2 border-t border-gray-200">

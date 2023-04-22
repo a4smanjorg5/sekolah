@@ -1,8 +1,12 @@
 <?php
 
-use App\Http\Controllers\DasborController;
 use App\Http\Controllers\EntrantController;
-use App\Http\Controllers\PhotoController;
+use App\Http\Controllers\MediaController;
+use App\Http\Controllers\PageController;
+use App\Http\Controllers\SiteController;
+use App\Http\Controllers\StudentController;
+use App\Models\Audit;
+use App\Models\Page;
 use Illuminate\Foundation\Application;
 // use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -19,32 +23,60 @@ use Inertia\Inertia;
 */
 
 Route::get('/', function () {
+    $carousel = featured_pages('carousel');
+    $carousel = array_filter($carousel, fn($p) => !empty($p->media));
+    $carousel = array_values($carousel);
     return Inertia::render('Welcome', [
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
+        'carousel' => $carousel,
+        'featured' => featured_pages('featured', true),
     ]);
 })->name('beranda');
 
-Route::resource('photos', PhotoController::class)->only([
-    'index', 'show'
-]);
-
 Route::middleware(['auth', 'verified'])->group(function() {
-    Route::get('/dashboard', [DasborController::class, 'show'])
-                ->name('dashboard');
-    Route::post('/dashboard', [DasborController::class, 'store']);
+    Route::get('/dashboard', function() {
+        return Inertia::render('Dashboard', [
+            'auditLog' => Audit::with('user:id,name')->orderByDesc('id')
+                                            ->cursorPaginate()
+                                            ->withPath('/audits'),
+        ]);
+    })->name('dashboard');
 
-    Route::resource('photos', PhotoController::class)->except([
-        'index', 'show'
+    Route::get('/audits', function() {
+        return Audit::with('user')->orderByDesc('id')->cursorPaginate(8);
+    });
+
+    Route::get('/tools', [SiteController::class, 'show'])
+                ->name('tools');
+    Route::post('/tools', [SiteController::class, 'store']);
+
+    Route::resource('media', MediaController::class)->except([
+        'index', 'show', 'edit',
+    ]);
+
+    Route::resource('pages', PageController::class)->only([
+        'store', 'update', 'destroy',
+    ]);
+
+    Route::resource('students', StudentController::class)->only([
+        'index', 'store', 'destroy',
+    ]);
+
+    Route::get('ppdb', [EntrantController::class, 'create'])->name('ppdb.create');
+
+    Route::resource('ppdb', EntrantController::class)->only([
+        'show', 'edit', 'store', 'destroy'
     ]);
 });
 
-require_once __DIR__.'/auth.php';
+Route::get('media', [MediaController::class, 'index'])
+            ->name('media.index');
+Route::get('media/{id}', [MediaController::class, 'show'])
+            ->middleware('cache.headers:public;max_age=2628000;etag');
 
-if (cache('pb') == 'ppdb') {
-    Route::get('ppdb', [EntrantController::class, 'create'])
-                ->name('ppdb');
-    Route::resource('ppdb', EntrantController::class)->only([
-        'store', 'show', 'edit'
-    ]);
-}
+Route::resource('pages', PageController::class)->only([
+    'index', 'show',
+]);
+
+require_once __DIR__.'/auth.php';

@@ -1,7 +1,7 @@
 import React from 'react';
 
-export default function ApplicationLogo({ className }) {
+export default function ApplicationLogo({ src, className }) {
     return (
-        <div>LOGO</div>
+        src ? <img src={src} className={className} /> : <div>LOGO</div>
     );
 }

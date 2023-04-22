@@ -9,14 +9,17 @@ class Entrant extends Model
 {
     use HasFactory;
 
+    public function resmi()
+    {
+        return $this->hasOne(Student::class, 'nik', 'nik');
+    }
+
     /**
      * The attributes that aren't mass assignable.
      *
      * @var array
      */
-    protected $guarded = [];
-
-    protected $primaryKey = 'nik';
+    protected $guarded = ['id'];
 
     /**
      * The attributes that should be cast.

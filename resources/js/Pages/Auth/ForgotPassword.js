@@ -5,7 +5,7 @@ import Input from '@/Components/Input';
 import ValidationErrors from '@/Components/ValidationErrors';
 import { Head, useForm } from '@inertiajs/inertia-react';
 
-export default function ForgotPassword({ status }) {
+export default function ForgotPassword({ logo, status }) {
     const { data, setData, post, processing, errors } = useForm({
         email: '',
     });
@@ -21,7 +21,7 @@ export default function ForgotPassword({ status }) {
     };
 
     return (
-        <Common>
+        <Common logo={logo}>
             <Head title="Forgot Password" />
 
             <div className="mb-4 text-sm text-gray-500 leading-normal">

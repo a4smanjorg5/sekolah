@@ -6,7 +6,7 @@ import Label from '@/Components/Label';
 import ValidationErrors from '@/Components/ValidationErrors';
 import { Head, useForm } from '@inertiajs/inertia-react';
 
-export default function ResetPassword({ token, email }) {
+export default function ResetPassword({ logo, token, email }) {
     const { data, setData, post, processing, errors, reset } = useForm({
         token: token,
         email: email,
@@ -31,7 +31,7 @@ export default function ResetPassword({ token, email }) {
     };
 
     return (
-        <Common>
+        <Common logo={logo}>
             <Head title="Reset Password" />
 
             <ValidationErrors errors={errors} />

@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import Authenticated from '@/Layouts/Authenticated';
 import Button from '@/Components/Button';
 import Checkbox from '@/Components/Checkbox';
 import Common from '@/Layouts/Common';
+import BlankSection from '@/Components/BlankSection';
 import FrmInput from '@/Components/FrmInput';
 import Label from '@/Components/Label';
 import ValidationErrors from '@/Components/ValidationErrors';
@@ -11,7 +13,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { Head, Link, useForm } from '@inertiajs/inertia-react';
 
-export default function Register(props) {
+export default function(props) {
     const { data, setData, post, processing, errors, reset } = useForm({
         nik: props.nik,
         nama: props.nama,
@@ -23,46 +25,72 @@ export default function Register(props) {
         nama_ayah: props.nama_ayah,
         ayah_masih_hidup: typeof props.ayah_masih_hidup == "undefined" ? !0 : (props.ayah_masih_hidup ? 1 : 0),
         telp_ayah: props.telp_ayah,
+        kerja_ayah: props.kerja_ayah,
+        hasil_ayah: props.hasil_ayah,
         nama_ibu: props.nama_ibu,
         ibu_masih_hidup: typeof props.ibu_masih_hidup == "undefined" ? !0 : (props.ibu_masih_hidup ? 1 : 0),
         telp_ibu: props.telp_ibu,
+        kerja_ibu: props.kerja_ibu,
+        hasil_ibu: props.hasil_ibu,
         nama_wali: props.nama_wali,
         telp_wali: props.telp_wali,
+        kerja_wali: props.kerja_wali,
+        hasil_wali: props.hasil_wali,
         alamat_wali: props.alamat_wali,
-    }), [ wali, setWali ] = useState();
+    }), [ wali, setWali ] = useState(),
+        [ ayahKerja, setAyahKerja ] = useState(1),
+        [ ibuKerja, setIbuKerja ] = useState(1);
 
     var harini = new Date();
     harini = harini.toISOString().split("T", 1)[0];
     harini = dayjs(harini);
 
     const onHandleChange = ({target}) => {
-        if (target.name) {
-            switch (target.type) {
-            case 'checkbox':
-                setData(target.name, target.checked ? 1 : 0);
-                break;
-            case 'select-one':
-                setData(target.name, target.selectedOptions[0].value);
-                break;
-            default:
-                setData(target.name, target.value);
-                break;
-            }
-        } else
-            setWali(target.checked);
+        switch (target.type) {
+        case 'checkbox':
+            setData(target.name, target.checked ? 1 : 0);
+            break;
+        case 'select-one':
+            setData(target.name, target.selectedOptions[0].value);
+            break;
+        default:
+            setData(target.name, target.value);
+            break;
+        }
     };
+
+    const unsetData = (k) => { data[k] = null };
 
     const submit = (e) => {
         e.preventDefault();
 
-        post(route('ppdb'), {
+        if (!data.ayah_masih_hidup || wali) {
+            ['telp_ayah', 'kerja_ayah', 'hasil_ayah'].forEach(unsetData);
+        } else if (!ayahKerja || wali) {
+            ['kerja_ayah', 'hasil_ayah'].forEach(unsetData);
+        }
+        if (!data.ibu_masih_hidup || wali) {
+            ['telp_ibu', 'kerja_ibu', 'hasil_ibu'].forEach(unsetData);
+        } else if (!ibuKerja || wali) {
+            ['kerja_ibu', 'hasil_ibu'].forEach(unsetData);
+        }
+        if ((data.ayah_masih_hidup || data.ibu_masih_hidup) && !wali) {
+            ['nama_wali', 'telp_wali', 'kerja_wali', 'hasil_wali'].forEach(unsetData);
+        }
+
+        post(route('ppdb' + (props.auth.user ? '.store' : '')), {
             preserveState: !!props.nik,
         });
     };
 
+    const Layout = props.auth.user ? Register : Common;
+
     return (
-        <Common>
-            <Head title="PDPB" />
+        <Layout
+            auth={props.auth}
+            logo={props.logo}
+        >
+            <Head title="PPDB" />
 
             <ValidationErrors errors={props.nik ? errors : props.errors} />
 
@@ -138,6 +166,14 @@ export default function Register(props) {
                             required
                         />
 
+                        {(data.ayah_masih_hidup || data.ibu_masih_hidup || '') && <div className="mt-4">
+                            <label className="flex items-center">
+
+                                <Checkbox value={wali} handleChange={({target}) => setWali(target.checked)} />
+                                <span className="ml-2 text-sm text-gray-600">Bersama wali</span>
+                            </label>
+                        </div>}
+
                         <FrmInput
                             name="nama_ayah"
                             label="Nama Ayah"
@@ -155,14 +191,48 @@ export default function Register(props) {
                         </div>
 
                         {(data.ayah_masih_hidup || '') && (
-                            <FrmInput
-                                name="telp_ayah"
-                                label="No.telp Ayah"
-                                value={data.telp_ayah}
-                                placeholder="08xxxxxxxxxx"
-                                handleChange={onHandleChange}
-                                required
-                            />
+                            <>
+                                <FrmInput
+                                    name="telp_ayah"
+                                    label="No.telp Ayah"
+                                    value={data.telp_ayah}
+                                    placeholder="08xxxxxxxxxx"
+                                    handleChange={onHandleChange}
+                                    required
+                                />
+
+                                {!wali && <>
+                                    {(data.ibu_masih_hidup || '') && <div className="mt-4">
+                                        <label className="flex items-center">
+                                            <Checkbox value={!ayahKerja} handleChange={({target}) => {
+                                                setAyahKerja(!target.checked);
+                                                if (target.checked) setIbuKerja(1);
+                                            }} />
+
+                                            <span className="ml-2 text-sm text-gray-600">Ayah Tidak Kerja</span>
+                                        </label>
+                                    </div>}
+
+                                    {(ayahKerja || !data.ibu_masih_hidup) && <>
+                                        <FrmInput
+                                            name="kerja_ayah"
+                                            label="Pekerjaan Ayah"
+                                            value={data.kerja_ayah}
+                                            handleChange={onHandleChange}
+                                            required
+                                        />
+        
+                                        <FrmInput
+                                            name="hasil_ayah"
+                                            type="number"
+                                            label="Penghasilan Ayah"
+                                            value={data.hasil_ayah}
+                                            handleChange={onHandleChange}
+                                            required
+                                        />
+                                    </>}
+                                </>}
+                            </>
                         )}
 
                         <FrmInput
@@ -182,14 +252,48 @@ export default function Register(props) {
                         </div>
 
                         {(data.ibu_masih_hidup || '') && (
-                            <FrmInput
-                                name="telp_ibu"
-                                label="No.telp Ibu"
-                                value={data.telp_ibu}
-                                placeholder="08xxxxxxxxxx"
-                                handleChange={onHandleChange}
-                                required
-                            />
+                            <>
+                                <FrmInput
+                                    name="telp_ibu"
+                                    label="No.telp Ibu"
+                                    value={data.telp_ibu}
+                                    placeholder="08xxxxxxxxxx"
+                                    handleChange={onHandleChange}
+                                    required
+                                />
+
+                                {!wali && <>
+                                    {(data.ibu_masih_hidup || '') && <div className="mt-4">
+                                        <label className="flex items-center">
+                                            <Checkbox value={!ibuKerja} handleChange={({target}) => {
+                                                setIbuKerja(!target.checked);
+                                                if (target.checked) setAyahKerja(1);
+                                            }} />
+
+                                            <span className="ml-2 text-sm text-gray-600">Ibu Tidak Kerja</span>
+                                        </label>
+                                    </div>}
+
+                                    {(ibuKerja || !data.ayah_masih_hidup) && <>
+                                        <FrmInput
+                                            name="kerja_ibu"
+                                            label="Pekerjaan Ibu"
+                                            value={data.kerja_ibu}
+                                            handleChange={onHandleChange}
+                                            required
+                                        />
+        
+                                        <FrmInput
+                                            name="hasil_ibu"
+                                            type="number"
+                                            label="Penghasilan Ibu"
+                                            value={data.hasil_ibu}
+                                            handleChange={onHandleChange}
+                                            required
+                                        />
+                                    </>}
+                                </>}
+                            </>
                         )}
 
                         <FrmInput
@@ -202,8 +306,8 @@ export default function Register(props) {
 
                         {(data.ayah_masih_hidup || data.ibu_masih_hidup || '') && <div className="mt-4">
                             <label className="flex items-center">
-                                <Checkbox value={wali} handleChange={onHandleChange} />
 
+                                <Checkbox value={wali} handleChange={({target}) => setWali(target.checked)} />
                                 <span className="ml-2 text-sm text-gray-600">Bersama wali</span>
                             </label>
                         </div>}
@@ -226,6 +330,23 @@ export default function Register(props) {
                                     handleChange={onHandleChange}
                                     required
                                 />
+
+                                <FrmInput
+                                    name="kerja_wali"
+                                    label="Pekerjaan Wali"
+                                    value={data.kerja_wali}
+                                    handleChange={onHandleChange}
+                                    required
+                                />
+
+                                <FrmInput
+                                    name="hasil_wali"
+                                    type="number"
+                                    label="Penghasilan Wali"
+                                    value={data.hasil_wali}
+                                    handleChange={onHandleChange}
+                                    required
+                                />
                             </>
                         )}
                     </>
@@ -237,6 +358,20 @@ export default function Register(props) {
                     </Button>
                 </div>
             </form>
-        </Common>
+        </Layout>
+    );
+}
+
+function Register({ auth, logo, children }) {
+    return (
+        <Authenticated
+            auth={auth}
+            logo={logo}
+            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">
+                Penerimaan Peserta Didik Baru
+            </h2>}
+        >
+            <BlankSection>{children}</BlankSection>
+        </Authenticated>
     );
 }

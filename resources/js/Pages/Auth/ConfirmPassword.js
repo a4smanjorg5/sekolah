@@ -6,7 +6,7 @@ import Label from '@/Components/Label';
 import ValidationErrors from '@/Components/ValidationErrors';
 import { Head, useForm } from '@inertiajs/inertia-react';
 
-export default function ConfirmPassword() {
+export default function ConfirmPassword({ logo }) {
     const { data, setData, post, processing, errors, reset } = useForm({
         password: '',
     });
@@ -28,7 +28,7 @@ export default function ConfirmPassword() {
     };
 
     return (
-        <Common>
+        <Common logo={logo}>
             <Head title="Confirm Password" />
 
             <div className="mb-4 text-sm text-gray-600">

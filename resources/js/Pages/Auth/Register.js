@@ -6,7 +6,7 @@ import Label from '@/Components/Label';
 import ValidationErrors from '@/Components/ValidationErrors';
 import { Head, Link, useForm } from '@inertiajs/inertia-react';
 
-export default function Register() {
+export default function Register({ logo }) {
     const { data, setData, post, processing, errors, reset } = useForm({
         name: '',
         email: '',
@@ -31,7 +31,7 @@ export default function Register() {
     };
 
     return (
-        <Common>
+        <Common logo={logo}>
             <Head title="Daftar" />
 
             <ValidationErrors errors={errors} />

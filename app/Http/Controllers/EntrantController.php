@@ -10,9 +10,12 @@ use Inertia\Inertia;
 
 class EntrantController extends Controller
 {
-    public function create()
+    public function create(Request $request)
     {
-        return Inertia::render('PPDB/Register');
+        return $request->user() ?
+            Inertia::render('PPDB/Create', [
+                'page' => Entrant::whereDoesntHave('resmi')->orderBy('id')->simplePaginate($request->query('per_page', 15)),
+            ]) : Inertia::render('PPDB/Register');
     }
 
     public function edit($nik)
@@ -25,11 +28,13 @@ class EntrantController extends Controller
         if (!preg_match('/^[0-9]{16}$/', $nik))
             abort(404);
         $this->preprocess();
-        $props = Entrant::find($nik);
+        $props = Entrant::with('resmi')->where('nik', $nik)->first();
         if (!$props) {
             if (!$canEdit) abort(404);
             $props = ['nik' => $nik];
         }
+        if (!$canEdit)
+            $props['nis'] = Student::where('nik', $nik)->count() ? 0 : Student::max('id') + 1;
         return Inertia::render('PPDB/' . ($canEdit ? 'Register' : 'Show'), $props);
     }
 
@@ -49,21 +54,36 @@ class EntrantController extends Controller
             'alamat' => 'required|string|max:255',
             'nama_ayah' => 'required|string|max:255',
             'ayah_masih_hidup' => 'required|regex:/^[01]$/',
+            'telp_ayah' => 'exclude_if:ayah_masih_hidup,0|regex:/^08[1-9][0-9]{5,11}$/',
+            'kerja_ayah' => 'exclude_if:ayah_masih_hidup,0|exclude_unless:kerja_wali,null|required_without_all:kerja_ibu,kerja_wali|string|max:255',
+            'hasil_ayah' => 'exclude_if:ayah_masih_hidup,0|exclude_unless:hasil_wali,null|required_without_all:hasil_ibu,hasil_wali|gt:0',
             'nama_ibu' => 'required|string|max:255',
             'ibu_masih_hidup' => 'required|regex:/^[01]$/',
-            'nama_wali' => 'string|max:255',
-            'telp_wali' => 'regex:/^08[1-9][0-9]{5,11}$/',
-            'alamat_wali' => 'string|max:255',
+            'telp_ibu' => 'exclude_if:ibu_masih_hidup,0|regex:/^08[1-9][0-9]{5,11}$/',
+            'kerja_ibu' => 'exclude_if:ibu_masih_hidup,0|exclude_unless:kerja_wali,null|required_without_all:kerja_ayah,kerja_wali|string|max:255',
+            'hasil_ibu' => 'exclude_if:ibu_masih_hidup,0|exclude_unless:hasil_wali,null|required_without_all:hasil_ibu,hasil_wali|gt:0',
+            'nama_wali' => 'required|string|max:255',
+            'telp_wali' => 'required|regex:/^08[1-9][0-9]{5,11}$/',
+            'kerja_wali' => 'required|string|max:255',
+            'hasil_wali' => 'required|gt:0',
+            'alamat_wali' => 'required|string|max:255',
         ];
-        if ($request->boolean('ayah_masih_hidup'))
-            $validator['telp_ayah'] = 'required|regex:/^08[1-9][0-9]{5,11}$/';
-        if ($request->boolean('ibu_masih_hidup'))
-            $validator['telp_ibu'] = 'required|regex:/^08[1-9][0-9]{5,11}$/';
-        if (!$request->boolean('ayah_masih_hidup') && !$request->boolean('ibu_masih_hidup')) {
+        $wali = array_reduce($request->only([
+            'nama_wali', 'telp_wali', 'kerja_wali', 'hasil_wali',
+        ]), function($carry, $item) {
+            return $carry || $item;
+        });
+        if (!array_reduce($request->only([
+            'ayah_masih_hidup', 'ibu_masih_hidup',
+        ]), function($carry, $item) {
+            return $carry || $item;
+        }) || $wali) {
             $validator['nama_wali'] = 'required|' . $validator['nama_wali'];
             $validator['telp_wali'] = 'required|' . $validator['telp_wali'];
+            $validator['kerja_wali'] = 'required|' . $validator['kerja_wali'];
+            $validator['hasil_wali'] = 'required|' . $validator['hasil_wali'];
         }
-        $validator = Validator::make($request->all(), $validator);
+        $validator = Validator::make($request->except(['id']), $validator);
         if ($validator->fails()) {
             $r = redirect(sprintf('%s/%s/edit', url()->current(), $request->input('nik')));
             if (url()->previous() != url()->current())
@@ -72,12 +92,14 @@ class EntrantController extends Controller
         }
         $data = array_map('strtoupper', $validator->validated());
         Entrant::upsert($data, ['nik'], array_keys($data));
-        return redirect(route('ppdb') . '/' .$request->input('nik'));
+        return redirect(route(sprintf('%s.show', $request->user() ? 'ppdb' : 'register'), [
+            ($request->user() ? 'ppdb' : 'register') => $request->input('nik'),
+        ]), 303);
     }
 
     protected function preprocess()
     {
-        if (Student::where('profil', request()->input('nik'))->count())
+        if (Student::where('nik', request()->input('nik'))->count())
             abort(403);
     }
 }

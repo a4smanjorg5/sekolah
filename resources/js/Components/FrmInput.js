@@ -24,7 +24,7 @@ export default function FrmInput({
                 name={name}
                 length={length}
                 id={idInput}
-                value={value}
+                value={(value || '')}
                 placeholder={placeholder}
                 className="mt-1 block w-full"
                 handleChange={handleChange}
