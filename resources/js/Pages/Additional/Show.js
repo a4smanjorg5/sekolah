@@ -23,6 +23,8 @@ export default function Show(props) {
             canLogin={props.canLogin}
             canRegister={props.canRegister}
             logo={props.logo}
+            tel={props.tel}
+            addr={props.addr}
             header={props.auth.user ? (<form
                 className="flex justify-between space-x-4"
                 onSubmit={(e) => { e.preventDefault(); put(route('pages.update', {page: props.current.id})) }}

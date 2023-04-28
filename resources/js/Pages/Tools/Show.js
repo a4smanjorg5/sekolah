@@ -1,48 +1,25 @@
 import React from 'react';
 import Authenticated from '@/Layouts/Authenticated';
 import { Head } from '@inertiajs/inertia-react';
-import { Inertia } from '@inertiajs/inertia';
 import HomepageForm from './HomepageForm';
-import LogoSection from './LogoSection';
-import Penerimaan from './Penerimaan';
+import SiteConfig from './SiteConfig';
 import PageForm from './PageForm';
 import PostForm from './PostForm';
 import SectionBorder from '@/Components/SectionBorder';
 
-export default function Show(props) {
-    const onHandleChange = ({ target, data }) => {
-        const send = data || {};
-        if (target)
-            switch (target.type) {
-            case 'checkbox':
-                send[target.name] = target.checked ? 1 : 0;
-                break;
-            case 'select-one':
-                send[target.name] = target.selectedOptions[0].value;
-                break;
-            default:
-                send[target.name] = target.value;
-                break;
-            }
-        Inertia.post(route('tools'), send);
-    }
-
+export default function Show({ pb, logo, ...props }) {
     return (
         <Authenticated
             auth={props.auth}
             errors={props.errors}
-            logo={props.logo}
+            logo={logo}
             header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Alat</h2>}
         >
             <Head title="Alat" />
 
             <div>
                 <div className="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
-                    <Penerimaan defaultValue={props.pb} handleChange={onHandleChange} />
-
-                    <SectionBorder />
-
-                    <LogoSection current={props.logo} changed={onHandleChange} />
+                    <SiteConfig {...({ pb, logo, })} />
 
                     <SectionBorder />
 

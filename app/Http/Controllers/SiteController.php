@@ -31,6 +31,13 @@ class SiteController extends Controller
                 $data[$key] = array_values(array_unique($v));
         }
         cache($data);
-        return redirect()->back();
+        if ($request->user())
+            $request->user()->audits()->create([
+                'action' => sprintf(
+                    'mengubah konfigurasi situs (%s)',
+                    implode(',', array_keys($data))
+                ),
+            ]);
+        return back(303);
     }
 }

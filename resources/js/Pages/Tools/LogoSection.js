@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import ApplicationLogo from '@/Components/ApplicationLogo';
 import CommonSection from '@/Components/CommonSection';
+import Label from '@/Components/Label';
 import SecondaryButton from '@/Components/SecondaryButton';
 
 export default function LogoSection({current, changed}) {
@@ -15,8 +16,9 @@ export default function LogoSection({current, changed}) {
     };
 
     return (
-        <CommonSection title="Logo Situs" description="Mengubah logo situs anda">
+        <>
             <div className="col-span-6 sm:col-span-4">
+                <Label value="Logo Situs" />
                 <input type="file" className="hidden"
                     accept="image/*"
                     ref={image}
@@ -33,6 +35,6 @@ export default function LogoSection({current, changed}) {
                     Hapus
                 </SecondaryButton>}
             </div>
-        </CommonSection>
+        </>
     );
 }

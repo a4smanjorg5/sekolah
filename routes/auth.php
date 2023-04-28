@@ -9,10 +9,11 @@ use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
-    switch (App\Models\User::exists() ? cache('pb') : 'ppb') {
+    switch (Schema::hasTable(with(new User)->getTable()) && User::exists() ? cache('pb') : 'ppb') {
     case 'ppb':
         Route::get('register', [RegisteredUserController::class, 'create'])
                     ->name('register');

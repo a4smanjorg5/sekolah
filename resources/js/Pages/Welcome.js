@@ -11,6 +11,8 @@ export default function Welcome(props) {
             auth={props.auth}
             bgStyle={props.bgStyle}
             logo={props.logo}
+            tel={props.tel}
+            addr={props.addr}
             canEntry={props.canEntry}
             canLogin={props.canLogin}
             canRegister={props.canRegister}

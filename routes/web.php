@@ -75,6 +75,8 @@ Route::get('media', [MediaController::class, 'index'])
 Route::get('media/{id}', [MediaController::class, 'show'])
             ->middleware('cache.headers:public;max_age=2628000;etag');
 
+Route::get('migrate', function() { Artisan::call('migrate'); return redirect('/'); });
+
 Route::resource('pages', PageController::class)->only([
     'index', 'show',
 ]);
