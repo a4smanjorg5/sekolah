@@ -9,6 +9,7 @@ export default function Student({ candidates, page, ...props }) {
         <Authenticated
             auth={props.auth}
             logo={props.logo}
+            theme={props.theme}
             header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">
                 Koleksi Peserta Didik
             </h2>}

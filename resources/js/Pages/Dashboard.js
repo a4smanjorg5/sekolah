@@ -22,6 +22,7 @@ export default function Dashboard(props) {
             auth={props.auth}
             logo={props.logo}
             errors={props.errors}
+            theme={props.theme}
             header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Dashboard</h2>}
         >
             <Head title="Dashboard" />
@@ -42,7 +43,7 @@ export default function Dashboard(props) {
                                 {auditLog.data.map(log =>
                                     <tr>
                                         <td className="pr-4">{new Date(log.time).toLocaleString()}</td>
-                                        <td><Link href="" className="hover:underline">{log.user.name}</Link></td>
+                                        <td><Link href={route('users.show', log.user.id)} className="hover:underline">{log.user.name}</Link></td>
                                         <td>{log.action}</td>
                                     </tr>
                                 )}

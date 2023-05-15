@@ -14,8 +14,8 @@ export default function Index(props) {
             canLogin={props.canLogin}
             canRegister={props.canRegister}
             logo={props.logo}
-            tel={props.tel}
-            addr={props.addr}
+            theme={props.theme}
+            info={props.info}
             header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">
                 Galeri {props.ig ? <a href={'https://www.instagram.com/' + props.ig.username} target="ig" className="text-gray-700 underline">
                     {props.ig.name}

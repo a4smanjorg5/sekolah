@@ -8,6 +8,10 @@ export default [
         value: 'media.index',
     },
     {
+        label: 'Profil Pegawai',
+        value: 'users.index',
+    },
+    {
         label: 'Halaman',
         value: ['pages.index', 'pages.show'],
     },

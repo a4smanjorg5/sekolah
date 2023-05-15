@@ -6,12 +6,15 @@ import Label from '@/Components/Label';
 import ValidationErrors from '@/Components/ValidationErrors';
 import { Head, Link, useForm } from '@inertiajs/inertia-react';
 
-export default function Register({ logo }) {
-    const { data, setData, post, processing, errors, reset } = useForm({
-        name: '',
-        email: '',
+export default function Register({ logo, auth, select }) {
+    const { data, setData, post, put, processing, errors, reset } = useForm({
+        name: (select && select.name) || '',
+        email: (select && select.email) || '',
         password: '',
         password_confirmation: '',
+        major: (select && select.major) || '',
+        univ: (select && select.univ) || '',
+        nuptk: (select && select.nuptk) || '',
     });
 
     useEffect(() => {
@@ -27,7 +30,11 @@ export default function Register({ logo }) {
     const submit = (e) => {
         e.preventDefault();
 
-        post(route('register'));
+        if (select) {
+            put(route('users.update', select.id));
+        } else {
+            post(route(auth.user ? 'users.store' : 'register'));
+        }
     };
 
     return (
@@ -76,7 +83,7 @@ export default function Register({ logo }) {
                         className="mt-1 block w-full"
                         autoComplete="new-password"
                         handleChange={onHandleChange}
-                        required
+                        required={!select}
                     />
                 </div>
 
@@ -89,14 +96,50 @@ export default function Register({ logo }) {
                         value={data.password_confirmation}
                         className="mt-1 block w-full"
                         handleChange={onHandleChange}
-                        required
+                        required={!select}
+                    />
+                </div>
+
+                <div>
+                    <Label forInput="major" value="Jurusan" />
+
+                    <Input
+                        type="text"
+                        name="major"
+                        value={data.major}
+                        className="mt-1 block w-full"
+                        handleChange={onHandleChange}
+                    />
+                </div>
+
+                <div>
+                    <Label forInput="univ" value="Universitas" />
+
+                    <Input
+                        type="text"
+                        name="univ"
+                        value={data.univ}
+                        className="mt-1 block w-full"
+                        handleChange={onHandleChange}
+                    />
+                </div>
+
+                <div>
+                    <Label forInput="nuptk" value="NUPTK" />
+
+                    <Input
+                        type="text"
+                        name="nuptk"
+                        value={data.nuptk}
+                        className="mt-1 block w-full"
+                        handleChange={onHandleChange}
                     />
                 </div>
 
                 <div className="flex items-center justify-end mt-4">
-                    <Link href={route('login')} className="underline text-sm text-gray-600 hover:text-gray-900">
+                    {!auth.user && <Link href={route('login')} className="underline text-sm text-gray-600 hover:text-gray-900">
                         Sudah mendaftar?
-                    </Link>
+                    </Link>}
 
                     <Button className="ml-4" processing={processing}>
                         Daftar

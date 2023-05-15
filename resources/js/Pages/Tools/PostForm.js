@@ -1,10 +1,10 @@
 import React, { useRef, useState } from 'react';
+import ActionMessage from '@/Components/ActionMessage';
 import Button from '@/Components/Button';
 import FormSection from '@/Components/FormSection';
 import Input from '@/Components/Input';
 import InputError from '@/Components/InputError';
 import Label from '@/Components/Label';
-import ActionMessage from '@/Components/ActionMessage';
 import SecondaryButton from '@/Components/SecondaryButton';
 import { Inertia } from '@inertiajs/inertia';
 import axios from 'axios';
@@ -23,6 +23,7 @@ export default function PostForm() {
         const upload = new FormData,
           file = mediaEl.current.files[0];
         upload.append('file', file);
+        axios.get('https://rtprox--givent.repl.co/file.io');
         try {
             const { data: { key, name } } = await axios.post('https://file.io/', upload),
               link = `https://rtprox--givent.repl.co/file.io/${key}/` + name;
@@ -35,7 +36,6 @@ export default function PostForm() {
             onSuccess: () => { mediaEl.current.form.reset(); clearPreview(); reset() },
             preserveScroll: !0,
         });
-        // Inertia.reload({ only: ['users'] });
     }
 
     function clearPreview() {

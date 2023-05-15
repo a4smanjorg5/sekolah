@@ -12,6 +12,10 @@ export default [
         value: ['students.index', 'students.show', 'ppdb.create', 'ppdb.edit', 'ppdb.show'],
     },
     {
+        label: 'Profil Pegawai',
+        value: 'users.index',
+    },
+    {
         label: 'Halaman',
         value: ['pages.index', 'pages.show'],
     },

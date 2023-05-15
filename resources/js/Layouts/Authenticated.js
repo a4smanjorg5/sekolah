@@ -6,7 +6,7 @@ import pages from '@/Components/AuthPages';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link } from '@inertiajs/inertia-react';
 
-export default function Authenticated({ auth, header, logo, children }) {
+export default function Authenticated({ auth, theme, header, logo, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
 
     function nav_link(p) {
@@ -36,15 +36,15 @@ export default function Authenticated({ auth, header, logo, children }) {
     }
 
     return (
-        <div className="min-h-screen bg-gray-100">
-            <div className="bg-white border-b border-gray-100">
+        <div className={`min-h-screen bg-${theme}-100`}>
+            <div className={`bg-${theme}-50 border-b border-${theme}-100`}>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex">
                         <a href="https://github.com/genrwork/yayasan#readme" target="pengembang">Hubungi Pengembang</a>
                     </div>
                 </div>
             </div>
-            <nav className="bg-white border-b border-gray-100">
+            <nav className={`bg-${theme}-50 border-b border-${theme}-100`}>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between h-16">
                         <div className="flex">
@@ -142,7 +142,7 @@ export default function Authenticated({ auth, header, logo, children }) {
             </nav>
 
             {header && (
-                <header className="bg-white shadow">
+                <header className={`bg-${theme}-50 shadow`}>
                     <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">{header}</div>
                 </header>
             )}

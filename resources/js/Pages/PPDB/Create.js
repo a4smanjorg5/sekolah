@@ -42,6 +42,7 @@ export default function Create({ page, ...props }) {
             auth={props.auth}
             errors={errors}
             logo={props.logo}
+            theme={props.theme}
             header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">
                 Penerimaan Peserta Didik Baru
             </h2>}
