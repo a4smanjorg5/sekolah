@@ -38,18 +38,29 @@ class RegisteredUserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'major' => 'nullable|string|max:191',
+            'univ' => 'nullable|string|max:191',
+            'nuptk' => 'nullable|string|max:191',
         ]);
+
+        $notAuth = !$request->user();
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'major' => $request->major,
+            'univ' => $request->univ,
+            'nuptk' => $request->nuptk,
         ]);
 
         event(new Registered($user));
 
-        Auth::login($user);
+        if ($notAuth) {
+            Auth::login($user);
+            return redirect(RouteServiceProvider::HOME);
+        }
 
-        return redirect(RouteServiceProvider::HOME);
+        return redirect(route('users.index'));
     }
 }

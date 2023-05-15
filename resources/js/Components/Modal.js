@@ -21,7 +21,6 @@ export default function Modal({
 
         const closeOnEscape = (e) => {
             if (e.key === 'Escape' && show) {
-                console.warn(e.key);
                 close()
             }
         };

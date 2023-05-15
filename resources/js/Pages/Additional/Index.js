@@ -16,8 +16,8 @@ export default function Index(props) {
             canLogin={props.canLogin}
             canRegister={props.canRegister}
             logo={props.logo}
-            tel={props.tel}
-            addr={props.addr}
+            theme={props.theme}
+            info={props.info}
             header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">
                 Koleksi Halaman Situs
             </h2>}

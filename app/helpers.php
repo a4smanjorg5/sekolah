@@ -80,3 +80,7 @@ if (! function_exists('ig_media')) {
         ));
     }
 }
+
+if (! defined('DISK_STORAGE')) {
+    define('DISK_STORAGE', isset($_ENV['VAPOR_ARTIFACT_NAME']) ? 's3' : 'public');
+}

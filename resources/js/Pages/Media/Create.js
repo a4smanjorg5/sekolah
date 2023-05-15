@@ -11,6 +11,7 @@ export default function Create(props) {
             canLogin={props.canLogin}
             canRegister={props.canRegister}
             logo={props.logo}
+            theme={props.theme}
             header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Tambah Media</h2>}
         >
             <Head title="Tambah Media" />

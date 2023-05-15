@@ -6,6 +6,7 @@ export default function Input({
     readOnly,
     value,
     placeholder,
+    pattern,
     length,
     className,
     autoComplete,
@@ -28,6 +29,7 @@ export default function Input({
                 name={name}
                 value={value}
                 placeholder={placeholder}
+                pattern={pattern}
                 maxLength={length}
                 readOnly={readOnly}
                 className={

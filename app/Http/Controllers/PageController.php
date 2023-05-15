@@ -12,11 +12,11 @@ class PageController extends Controller
     protected static function validasi(Request $request)
     {
         $valid = $request->validateWithBag('publishPage', [
-            'judul' => 'required|string|max:255',
+            'judul' => 'required|string|max:60',
             'id_media' => ['regex:/^[0-9]+$/', Rule::when(function($input) {
                 return is_null($input->paragraf);
             }, 'gt:0')],
-            'paragraf' => 'nullable|string|max:255',
+            'paragraf' => 'nullable|string|max:600',
         ]);
         return $valid;
     }

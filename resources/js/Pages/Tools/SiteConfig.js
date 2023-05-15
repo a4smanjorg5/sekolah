@@ -4,6 +4,12 @@ import Label from '@/Components/Label';
 import LogoSection from './LogoSection';
 import { Inertia } from '@inertiajs/inertia';
 
+const colors = [
+    'slate', 'gray', 'zinc', 'neutral', 'stone', 'red', 'orange',
+    'amber', 'yellow', 'lime', 'green', 'emerald', 'teal', 'cyan', 'sky',
+    'blue', 'indigo', 'violet', 'purple', 'fuchsia', 'pink', 'rose',
+];
+
 export default function SiteConfig(config) {
     const handleChange = ({ target, data }) => {
         const send = data || {};
@@ -28,12 +34,21 @@ export default function SiteConfig(config) {
                 <Label for="pb" value="Status Penerimaan" />
                 <select name="pb" defaultValue={config.pb} onChange={handleChange}>
                     <option value="">Tidak ada</option>
-                    {/*<option value="ppdb">Peserta Didik</option>*/}
+                    <option value="ppdb">Peserta Didik</option>
                     <option value="ppb">Pegawai/Guru</option>
                 </select>
             </div>
 
             <LogoSection current={config.logo} changed={handleChange} />
+
+            <div className="col-span-6 sm:col-span-4">
+                <Label value="Warna Tema" />
+                <select name="theme" defaultValue={config.theme} onChange={handleChange}>
+                    {colors.map(c =>
+                        <option value={c} className={`bg-${c}-200 text-${c}-700`}>{c[0].toUpperCase() + c.substr(1)}</option>
+                    )}
+                </select>
+            </div>
         </CommonSection>
     );
 }

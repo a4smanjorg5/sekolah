@@ -20,6 +20,7 @@ class SiteController extends Controller
             'pages' => Page::all(),
             'ci' => cache('carousel', []),
             'featured' => cache('featured', []),
+            'pf' => cache('posts', []),
         ]);
     }
 
@@ -27,10 +28,13 @@ class SiteController extends Controller
     {
         $data = $request->all();
         foreach ($data as $key => $v) {
-            if (in_array($key, ['carousel', 'featured']))
-                $data[$key] = array_values(array_unique($v));
+            if (in_array($key, ['carousel', 'featured', 'tels'])) {
+                $v = array_values(array_unique($v));
+                // $data[$key] = $v;
+            }
+            cache([$key => $v]);
         }
-        cache($data);
+        // cache($data);
         if ($request->user())
             $request->user()->audits()->create([
                 'action' => sprintf(

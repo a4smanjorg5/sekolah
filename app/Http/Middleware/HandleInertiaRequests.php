@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Link;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Middleware;
@@ -43,6 +44,18 @@ class HandleInertiaRequests extends Middleware
                 return (new Ziggy)->toArray();
             },
             'bgStyle' => config('bgstyle'),
+            'theme' => cache('theme', 'slate'),
+            'info' => function() {
+                return [
+                    'tels' => cache('tels', []),
+                    'addr' => [
+                        'url' => cache('addrUrl', ''),
+                        'label' => cache('addrLabel', ''),
+                    ],
+                    'links' => Link::all(),
+                    'npsn' => cache('npsn', '-'),
+                ];
+            },
             'logo'=> cache('logo'),
         ]);
         if (!$request->user()) {

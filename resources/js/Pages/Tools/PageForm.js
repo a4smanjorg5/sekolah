@@ -16,8 +16,8 @@ export default function PageForm({ mediaPage }) {
         judul: '',
         id_media: 0,
         paragraf: '',
-    }), [mediaPreview, setMediaPreview] = useState(null),
-      trying = useRef(0);
+    }),// trying = useRef(0),
+      [mediaPreview, setMediaPreview] = useState(null);
 
     const onSubmit = () => {
         post(route('pages.store'), {
@@ -29,14 +29,16 @@ export default function PageForm({ mediaPage }) {
 
     const listMedia = ({target}) => {
         const targetState = target.disabled;
-        mediaPage || Inertia.reload({
-            onStart: () => { target.disabled = !0 },
+        Inertia.reload({
+            onStart: () => { if (!mediaPage) target.disabled = !0 },
             onFinish: () => {
                 target.disabled = targetState;
-                if (trying.current < 3) {
+                if (!mediaPage)
+                    target.click();
+                /*if (trying.current < 3) {
                     trying.current++;
                     target.click();
-                } else trying.current = 0;
+                } else trying.current = 0;*/
             },
             only: ['mediaPage'],
         });

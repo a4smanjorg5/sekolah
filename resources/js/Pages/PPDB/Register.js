@@ -89,6 +89,7 @@ export default function(props) {
         <Layout
             auth={props.auth}
             logo={props.logo}
+            theme={props.theme}
         >
             <Head title="PPDB" />
 
@@ -97,7 +98,7 @@ export default function(props) {
             <form onSubmit={submit}>
                 <FrmInput
                     name="nik"
-                    label="NIK"
+                    label="NIK Peserta Didik"
                     value={data.nik}
                     length="16"
                     isFocused={!props.nik}
@@ -193,6 +194,27 @@ export default function(props) {
                         {(data.ayah_masih_hidup || '') && (
                             <>
                                 <FrmInput
+                                    name="nik_ayah"
+                                    label="NIK Ayah"
+                                    value={data.nik_ayah}
+                                    handleChange={onHandleChange}
+                                    required
+                                />
+
+                                <div className="mt-4">
+                                    <Label forInput="agama_ayah" value="Agama Ayah" />
+
+                                    <select name="agama_ayah" onChange={onHandleChange} defaultValue={data.agama_ayah} required>
+                                        <option value="">-- Pilih Agama --</option>
+                                        <option value="protestan">Protestan</option>
+                                        <option value="katolik">Katolik</option>
+                                        <option value="islam">Islam</option>
+                                        <option value="buddha">Buddha</option>
+                                        <option value="hindu">Hindu</option>
+                                    </select>
+                                </div>
+
+                                <FrmInput
                                     name="telp_ayah"
                                     label="No.telp Ayah"
                                     value={data.telp_ayah}
@@ -253,6 +275,27 @@ export default function(props) {
 
                         {(data.ibu_masih_hidup || '') && (
                             <>
+                                <FrmInput
+                                    name="nik_ibu"
+                                    label="NIK Ibu"
+                                    value={data.nik_ibu}
+                                    handleChange={onHandleChange}
+                                    required
+                                />
+
+                                <div className="mt-4">
+                                    <Label forInput="agama_ibu" value="Agama Ibu" />
+
+                                    <select name="agama_ibu" onChange={onHandleChange} defaultValue={data.agama_ibu} required>
+                                        <option value="">-- Pilih Agama --</option>
+                                        <option value="protestan">Protestan</option>
+                                        <option value="katolik">Katolik</option>
+                                        <option value="islam">Islam</option>
+                                        <option value="buddha">Buddha</option>
+                                        <option value="hindu">Hindu</option>
+                                    </select>
+                                </div>
+
                                 <FrmInput
                                     name="telp_ibu"
                                     label="No.telp Ibu"
@@ -323,6 +366,27 @@ export default function(props) {
                                 />
 
                                 <FrmInput
+                                    name="nik_wali"
+                                    label="NIK Wali"
+                                    value={data.nik_wali}
+                                    handleChange={onHandleChange}
+                                    required
+                                />
+
+                                <div className="mt-4">
+                                    <Label forInput="agama_wali" value="Agama Wali" />
+
+                                    <select name="agama_wali" onChange={onHandleChange} defaultValue={data.agama_wali} required>
+                                        <option value="">-- Pilih Agama --</option>
+                                        <option value="protestan">Protestan</option>
+                                        <option value="katolik">Katolik</option>
+                                        <option value="islam">Islam</option>
+                                        <option value="buddha">Buddha</option>
+                                        <option value="hindu">Hindu</option>
+                                    </select>
+                                </div>
+
+                                <FrmInput
                                     name="telp_wali"
                                     label="No.telp Wali"
                                     value={data.telp_wali}
@@ -362,11 +426,12 @@ export default function(props) {
     );
 }
 
-function Register({ auth, logo, children }) {
+function Register({ auth, logo, theme, children }) {
     return (
         <Authenticated
             auth={auth}
             logo={logo}
+            theme={theme}
             header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">
                 Penerimaan Peserta Didik Baru
             </h2>}

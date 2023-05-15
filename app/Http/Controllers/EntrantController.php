@@ -55,17 +55,23 @@ class EntrantController extends Controller
             'nama_ayah' => 'required|string|max:255',
             'ayah_masih_hidup' => 'required|regex:/^[01]$/',
             'telp_ayah' => 'exclude_if:ayah_masih_hidup,0|regex:/^08[1-9][0-9]{5,11}$/',
+            'nik_ibu' => 'exclude_if:ayah_masih_hidup,0|regex:/^[0-9]{16}$/',
+            'agama_ibu' => ['exclude_if:ayah_masih_hidup,0', 'regex:/^(?:islam|protestan|katolik|buddha|hindu)$/'],
             'kerja_ayah' => 'exclude_if:ayah_masih_hidup,0|exclude_unless:kerja_wali,null|required_without_all:kerja_ibu,kerja_wali|string|max:255',
             'hasil_ayah' => 'exclude_if:ayah_masih_hidup,0|exclude_unless:hasil_wali,null|required_without_all:hasil_ibu,hasil_wali|gt:0',
             'nama_ibu' => 'required|string|max:255',
             'ibu_masih_hidup' => 'required|regex:/^[01]$/',
             'telp_ibu' => 'exclude_if:ibu_masih_hidup,0|regex:/^08[1-9][0-9]{5,11}$/',
+            'nik_ibu' => 'exclude_if:ibu_masih_hidup,0|regex:/^[0-9]{16}$/',
+            'agama_ibu' => ['exclude_if:ibu_masih_hidup,0', 'regex:/^(?:islam|protestan|katolik|buddha|hindu)$/'],
             'kerja_ibu' => 'exclude_if:ibu_masih_hidup,0|exclude_unless:kerja_wali,null|required_without_all:kerja_ayah,kerja_wali|string|max:255',
             'hasil_ibu' => 'exclude_if:ibu_masih_hidup,0|exclude_unless:hasil_wali,null|required_without_all:hasil_ibu,hasil_wali|gt:0',
-            'nama_wali' => 'required|string|max:255',
-            'telp_wali' => 'required|regex:/^08[1-9][0-9]{5,11}$/',
-            'kerja_wali' => 'required|string|max:255',
-            'hasil_wali' => 'required|gt:0',
+            'nama_wali' => 'string|max:255',
+            'nik_wali' => 'regex:/^[0-9]{16}$/',
+            'agama_wali' => ['regex:/^(?:islam|protestan|katolik|buddha|hindu)$/'],
+            'telp_wali' => 'regex:/^08[1-9][0-9]{5,11}$/',
+            'kerja_wali' => 'string|max:255',
+            'hasil_wali' => 'gt:0',
             'alamat_wali' => 'required|string|max:255',
         ];
         $wali = array_reduce($request->only([
@@ -79,6 +85,8 @@ class EntrantController extends Controller
             return $carry || $item;
         }) || $wali) {
             $validator['nama_wali'] = 'required|' . $validator['nama_wali'];
+            $validator['nik_wali'] = 'required|' . $validator['nik_wali'];
+            $validator['agama_wali'] = 'required|' . $validator['agama_wali'];
             $validator['telp_wali'] = 'required|' . $validator['telp_wali'];
             $validator['kerja_wali'] = 'required|' . $validator['kerja_wali'];
             $validator['hasil_wali'] = 'required|' . $validator['hasil_wali'];

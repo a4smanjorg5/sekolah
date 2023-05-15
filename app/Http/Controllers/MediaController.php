@@ -59,8 +59,8 @@ class MediaController extends Controller
             )->json();
             if (!empty($r['id'])) {
                 if ($request->user())
-                    $request->user()->create([
-                        'action' => 'menambahkan media ke ig()',
+                    $request->user()->audits()->create([
+                        'action' => sprintf('menambahkan media ke ig(ket:%s)', $request->input('caption')),
                     ]);
                 return back(303);
             }
