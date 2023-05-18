@@ -34,6 +34,7 @@ Route::get('/', function () {
         'phpVersion' => PHP_VERSION,
         'carousel' => $carousel,
         'featured' => featured_pages('featured', true),
+        'marquee' => cache('marquee', ''),
     ]);
 })->name('beranda');
 
