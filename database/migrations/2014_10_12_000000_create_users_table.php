@@ -22,6 +22,7 @@ class CreateUsersTable extends Migration
             $table->rememberToken();
             $table->string('major')->nullable();
             $table->string('univ')->nullable();
+            $table->string('nuptk')->default('-');
             $table->softDeletes();
             $table->timestamps();
         });

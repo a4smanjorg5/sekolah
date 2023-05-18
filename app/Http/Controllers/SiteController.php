@@ -21,6 +21,7 @@ class SiteController extends Controller
             'ci' => cache('carousel', []),
             'featured' => cache('featured', []),
             'pf' => cache('posts', []),
+            'marquee' => cache('marquee', ''),
         ]);
     }
 

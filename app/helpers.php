@@ -7,7 +7,9 @@ if (! function_exists('featured_pages')) {
     {
         $tampil = cache($name, []);
         if (count($tampil) > 0) {
-            $tampil = App\Models\Page::findMany($tampil);
+            $tampil = App\Models\Page::orderByRaw(
+                sprintf('field(id,%s)', implode(',', $tampil))
+            )->findMany($tampil);
             $tampil = iterator_to_array($tampil);
             for ($i=0; $i < count($tampil); $i++) {
                 $p = $tampil[$i];

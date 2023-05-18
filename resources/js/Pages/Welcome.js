@@ -35,13 +35,15 @@ export default function Welcome(props) {
                             </div>)}
                         </Slide>
                     </div>}
+
+                    {props.marquee && <div className={`py-6 font-semibold text-${props.theme}-800 text-lg`}>
+                        <marquee>{props.marquee}</marquee>
+                    </div>}
+
                     {(props.featured.length || '') && <div className="max-w-7xl mx-auto sm:px-6 sm:grid sm:grid-cols-3 sm:gap-6 lg:px-8">
                         {props.featured.map((p, i) => <div key={p.id} className={'shadow overflow-hidden sm:rounded-md ' + (i == 0 ? 'sm:col-span-3' : 'mt-8 sm:mt-auto')}>
                             <div className="px-4 py-5 md:flex bg-white/80 sm:p-6">
-                                {i == 0 && p.media && <div
-                                    style={{ backgroundImage: "url(" + (p.media.thumbnail_url || p.media.media_url) + ")" }}
-                                    className="bg-cover bg-center w-40 md:w-80 mr-8 aspect-[3/4]"
-                                ></div>}
+                                {i == 0 && p.media && <img src={(p.media.thumbnail_url || p.media.media_url)} className="w-1/6 mr-8" />}
                                 <div>
                                     <Link href={route('pages.show', p.id)} className="line-clamp-1 font-semibold text-lg sm:text-xl">{p.judul}</Link>
                                     <p {...(i > 0 ? { className: 'line-clamp-4 sm:line-clamp-7' } : {})}>{p.paragraf}</p>

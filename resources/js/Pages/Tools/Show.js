@@ -23,7 +23,7 @@ export default function Show({ pb, logo, theme, info: { tels, links, ...restInfo
 
             <div>
                 <div className="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
-                    <SiteConfig {...({ pb, logo, theme, })} />
+                    <SiteConfig pb={pb} logo={logo} theme={theme} />
 
                     <SectionBorder />
 
@@ -31,7 +31,7 @@ export default function Show({ pb, logo, theme, info: { tels, links, ...restInfo
 
                     <SectionBorder />
 
-                    <InfoForm {...restInfo} />
+                    <InfoForm marquee={props.marquee} {...restInfo} />
 
                     <SectionBorder />
 

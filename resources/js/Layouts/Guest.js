@@ -212,20 +212,20 @@ export default function Guest({ auth, bgStyle, header, logo, theme, info: {
             <div className={`bg-${theme}-50 shadow-top`} ref={footer}>
                 <div className="py-6">
                     {addr && <div className="max-w-7xl mx-auto mb-4 px-4 sm:px-6 lg:px-8">
-                        Lokasi: <a href={addr.url} target="addr">{addr.label}</a>
+                        Lokasi: <a href={addr.url} className="underline" target="addr">{addr.label}</a>
                     </div>}
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                         <div className="md:flex md:space-x-8">
                             {(links.length || '') && <div className="mb-4">
-                                <div>Tautan</div>
+                                {/*<div>Tautan</div>*/}
                                 {links.map(link =>
-                                    <a href={link.href} className="block" target="info">{link.label}</a>
+                                    <a href={link.href} className="block underline" target="info">{link.label}</a>
                                 )}
                             </div>}
                             {(tels.length || '') && <div className="mb-4">
                                 <div>Hubungi</div>
                                 {tels.map(telp =>
-                                    <a href={'tel:' + telp} className="block" target="info">{telp}</a>
+                                    <a href={'tel:' + telp} className="block underline" target="info">{telp}</a>
                                 )}
                             </div>}
                         </div>

@@ -8,11 +8,11 @@ import Label from '@/Components/Label';
 import SecondaryButton from '@/Components/SecondaryButton';
 import { useForm } from '@inertiajs/inertia-react';
 
-export default function InfoForm({ addr, npsn }) {
+export default function InfoForm({ addr, npsn, marquee, }) {
     const { data, setData, post, processing, reset, recentlySuccessful, errors } = useForm({
         addrLabel: addr.label,
         addrUrl: addr.url,
-        npsn: npsn,
+        npsn, marquee,
     }), iconEl = useRef(), [iconPreview, setIconPreview] = useState();
 
     const onHandleChange = ({ target }) => {
@@ -47,6 +47,17 @@ export default function InfoForm({ addr, npsn }) {
                     handleChange={onHandleChange} required
                 />
                 <InputError message={errors.npsn} className="mt-2" />
+            </div>
+
+            <div className="col-span-6 sm:col-span-4">
+                <Label value="Pesan Teks Bergerak" />
+                <Input
+                    id="marquee" type="text" name="marquee"
+                    className="mt-1 block w-full"
+                    length="60" value={data.marquee} autoComplete="off"
+                    handleChange={onHandleChange}
+                />
+                <InputError message={errors.marquee} className="mt-2" />
             </div>
 
             <div className="col-span-6 sm:col-span-4">
