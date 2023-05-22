@@ -7,6 +7,10 @@ use App\Http\Controllers\SiteController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\Forum\CategoryController as ForumCategoryController;
+use App\Http\Controllers\Forum\TopicController as ForumTopicController;
+use App\Http\Controllers\Forum\ThreadController as ForumThreadController;
+use App\Http\Controllers\Forum\ThreadReplyController;
 use App\Models\Audit;
 use App\Models\Link;
 use App\Models\Page;
@@ -84,6 +88,16 @@ Route::middleware(['auth', 'verified'])->group(function() {
     Route::resource('ppdb', EntrantController::class)->only([
         'show', 'edit', 'store', 'destroy'
     ]);
+
+    Route::prefix('/forum')->name('forum.')->group(function() {
+        Route::resource('categories', ForumCategoryController::class)->only([
+            'store', 'update', 'destroy',
+        ]);
+
+        Route::resource('topics', ForumTopicController::class)->only([
+            'store', 'update', 'destroy',
+        ]);
+    });
 });
 
 Route::get('media', [MediaController::class, 'index'])
@@ -118,3 +132,17 @@ Route::resource('pages', PageController::class)->only([
 ]);
 
 require_once __DIR__.'/auth.php';
+
+Route::get('/forum', [ForumCategoryController::class, 'index'])->name('forum.home');
+Route::prefix('/forum')->name('forum.')->group(function() {
+    Route::name('threads')->resource('/threads/replies', ThreadReplyController::class)->only([
+        'store', 'update',
+    ]);
+
+    Route::resource('threads', ForumThreadController::class)->only([
+        'create', 'store', 'show', 'update',
+    ]);
+
+    Route::get('/topics/{topic}', [ForumTopicController::class, 'show'])->name('topics.show');
+    Route::get('/categories/{category}', [ForumCategoryController::class, 'show'])->name('categories.show');
+});
