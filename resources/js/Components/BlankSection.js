@@ -1,13 +1,9 @@
 import React, { useState } from 'react';
 
-export default function BlankSection({ className, children }) {
+export default function BlankSection({ className, theme = 'gray', id, children }) {
     return (
-        <div className="py-12">
-            <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <div className={'p-6 bg-white border-b border-gray-200' + (className || '')}>{children}</div>
-                </div>
-            </div>
+        <div className={`bg-${theme}-50 overflow-hidden shadow-sm sm:rounded-lg`}>
+            <div className={`p-6 bg-${theme}-50 border-b border-${theme}-200 ` + (className || '')} id={id}>{children}</div>
         </div>
     );
 }

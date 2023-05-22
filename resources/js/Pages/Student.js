@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import Authenticated from '@/Layouts/Authenticated';
-import BlankSection from '@/Components/BlankSection';
 import { Head, Link } from '@inertiajs/inertia-react';
 import { Inertia } from '@inertiajs/inertia';
 

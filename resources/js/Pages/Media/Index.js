@@ -24,9 +24,13 @@ export default function Index(props) {
         >
             <Head title="Galeri" />
 
-            <BlankSection>
-                <Galeri page={props.mediaPage} />
-            </BlankSection>
+            <div className="py-12">
+                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                    <BlankSection>
+                        <Galeri page={props.mediaPage} />
+                    </BlankSection>
+                </div>
+            </div>
         </Guest>
     );
 }

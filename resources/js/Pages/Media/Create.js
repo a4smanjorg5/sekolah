@@ -16,11 +16,15 @@ export default function Create(props) {
         >
             <Head title="Tambah Media" />
 
-            <BlankSection>
-                <Link href={route('media.index')} className="block my-6 text-gray-700 underline">
-                    Lihat Galeri
-                </Link>
-            </BlankSection>
+            <div className="py-12">
+                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                    <BlankSection>
+                        <Link href={route('media.index')} className="block my-6 text-gray-700 underline">
+                            Lihat Galeri
+                        </Link>
+                    </BlankSection>
+                </div>
+            </div>
         </Authenticated>
     );
 }
