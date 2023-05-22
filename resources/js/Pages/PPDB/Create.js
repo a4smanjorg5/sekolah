@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import Authenticated from '@/Layouts/Authenticated';
 import Button from '@/Components/Button';
 import Checkbox from '@/Components/Checkbox';
-import BlankSection from '@/Components/BlankSection';
 import FrmInput from '@/Components/FrmInput';
 import Label from '@/Components/Label';
 import ValidationErrors from '@/Components/ValidationErrors';

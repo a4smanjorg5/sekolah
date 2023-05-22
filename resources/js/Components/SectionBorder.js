@@ -1,10 +1,10 @@
 import React from 'react';
 
-export default function SectionBorder() {
+export default function SectionBorder({ theme = 'gray' }) {
     return (
         <div className="hidden sm:block">
             <div className="py-8">
-                <div className="border-t border-gray-200"></div>
+                <div className={`border-t border-${theme}-200`}></div>
             </div>
         </div>
     );
