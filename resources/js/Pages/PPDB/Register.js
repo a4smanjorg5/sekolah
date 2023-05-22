@@ -436,7 +436,11 @@ function Register({ auth, logo, theme, children }) {
                 Penerimaan Peserta Didik Baru
             </h2>}
         >
-            <BlankSection>{children}</BlankSection>
+            <div className="py-12">
+                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                    <BlankSection>{children}</BlankSection>
+                </div>
+            </div>
         </Authenticated>
     );
 }

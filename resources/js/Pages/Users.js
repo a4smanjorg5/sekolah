@@ -24,52 +24,56 @@ export default function Index(props) {
         >
             <Head title="Profil Pegawai" />
 
-            <BlankSection>
-                {props.auth.user && <Link
-                    href={route('users.create')}
-                    className="inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150"
-                >
-                    Tambah
-                </Link>}
-                <table width="100%" style={{ borderCollapse: 'separate' }}>
-                    <thead>
-                        <tr>
-                            <th>Nama</th>
-                            <th>Jurusan</th>
-                            <th>Universitas</th>
-                            <th>NUPTK</th>
-                            {props.auth.user && <td align="center">Aksi</td>}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {props.page.data.map(u => <tr>
-                            <td {...(u.deleted_at ? { className: 'line-through' } : {})}>{u.name}</td>
-                            <td {...(u.deleted_at ? { className: 'line-through' } : {})}>{u.major}</td>
-                            <td {...(u.deleted_at ? { className: 'line-through' } : {})}>{u.univ}</td>
-                            <td {...(u.deleted_at ? { className: 'line-through' } : {})}>{u.nuptk}</td>
-                            {props.auth.user && (<td><div className="col-start-6 flex justify-around">
-                                <Link href={route('users.show', u.id)}>
-                                    UBAH
-                                </Link>
-                                {u.deleted_at ? <Link
-                                    href={route('users.restore', u.id)}
-                                    method="patch"
-                                    as="button"
-                                >
-                                    PULIHKAN
-                                </Link> : <Link
-                                    href={route('users.destroy', u.id)}
-                                    method="delete"
-                                    as="button"
-                                    className="text-sm text-rose-700 hover:text-pink-500"
-                                >
-                                    HAPUS
-                                </Link>}
-                            </div></td>)}
-                        </tr>)}
-                    </tbody>
-                </table>
-            </BlankSection>
+            <div className="py-12">
+                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                    <BlankSection>
+                        {props.auth.user && <Link
+                            href={route('users.create')}
+                            className="inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150"
+                        >
+                            Tambah
+                        </Link>}
+                        <table width="100%" style={{ borderCollapse: 'separate' }}>
+                            <thead>
+                                <tr>
+                                    <th>Nama</th>
+                                    <th>Jurusan</th>
+                                    <th>Universitas</th>
+                                    <th>NUPTK</th>
+                                    {props.auth.user && <td align="center">Aksi</td>}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {props.page.data.map(u => <tr>
+                                    <td {...(u.deleted_at ? { className: 'line-through' } : {})}>{u.name}</td>
+                                    <td {...(u.deleted_at ? { className: 'line-through' } : {})}>{u.major}</td>
+                                    <td {...(u.deleted_at ? { className: 'line-through' } : {})}>{u.univ}</td>
+                                    <td {...(u.deleted_at ? { className: 'line-through' } : {})}>{u.nuptk}</td>
+                                    {props.auth.user && (<td><div className="col-start-6 flex justify-around">
+                                        <Link href={route('users.show', u.id)}>
+                                            UBAH
+                                        </Link>
+                                        {u.deleted_at ? <Link
+                                            href={route('users.restore', u.id)}
+                                            method="patch"
+                                            as="button"
+                                        >
+                                            PULIHKAN
+                                        </Link> : <Link
+                                            href={route('users.destroy', u.id)}
+                                            method="delete"
+                                            as="button"
+                                            className="text-sm text-rose-700 hover:text-pink-500"
+                                        >
+                                            HAPUS
+                                        </Link>}
+                                    </div></td>)}
+                                </tr>)}
+                            </tbody>
+                        </table>
+                    </BlankSection>
+                </div>
+            </div>
         </Layout>
     );
 }

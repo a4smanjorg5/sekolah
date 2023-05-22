@@ -24,23 +24,27 @@ export default function Index(props) {
         >
             <Head title="Halaman Tambahan" />
 
-            <BlankSection>
-                {props.pages.map(p => <div key={p.id} {...(props.auth.user && {className: 'grid grid-cols-3 gap-6'})}>
-                    <div {...(props.auth.user && {className: 'col-span-2'})}>
-                        <Link href={route('pages.show', {page: p.id})} className="text-lg transition-[font-size] duration-750 hover:text-cyan-500 hover:text-xl">{p.judul}</Link>
-                    </div>
-                    {props.auth.user && (<div className="col-start-3 flex justify-around">
-                        <Link
-                            href={route('pages.show', {page: p.id})}
-                            method="delete"
-                            as="button"
-                            className="text-sm text-rose-700 hover:text-pink-500"
-                        >
-                            HAPUS
-                        </Link>
-                    </div>)}
-                </div>)}
-            </BlankSection>
+            <div className="py-12">
+                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                    <BlankSection>
+                        {props.pages.map(p => <div key={p.id} {...(props.auth.user && {className: 'grid grid-cols-3 gap-6'})}>
+                            <div {...(props.auth.user && {className: 'col-span-2'})}>
+                                <Link href={route('pages.show', {page: p.id})} className="text-lg transition-[font-size] duration-750 hover:text-cyan-500 hover:text-xl">{p.judul}</Link>
+                            </div>
+                            {props.auth.user && (<div className="col-start-3 flex justify-around">
+                                <Link
+                                    href={route('pages.show', {page: p.id})}
+                                    method="delete"
+                                    as="button"
+                                    className="text-sm text-rose-700 hover:text-pink-500"
+                                >
+                                    HAPUS
+                                </Link>
+                            </div>)}
+                        </div>)}
+                    </BlankSection>
+                </div>
+            </div>
         </Layout>
     );
 }
