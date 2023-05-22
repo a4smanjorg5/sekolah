@@ -14,6 +14,11 @@ class Category extends Model
         return $this->hasMany(Topic::class);
     }
 
+    public function threads()
+    {
+        return $this->hasManyThrough(Thread::class, Topic::class);
+    }
+
     protected $table = 'forum_categories';
 
     /**
