@@ -49,6 +49,9 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Event::listen(function(\Illuminate\Database\Events\MigrationsStarted $event) {
+            \Schema::defaultStringLength(191);
+        });
         Event::listen('eloquent.created: *', function ($eventName, $data) {
             $this->logModel('membuat', $data[0]);
         });
